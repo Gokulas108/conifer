@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../axios.config";
 var XLSX = require("xlsx");
 const { jsPDF } = require("jspdf");
+require('jspdf-autotable');
 const { Search } = Input;
 
 const ApiTable = ({
@@ -156,18 +157,21 @@ const ApiTable = ({
                 style={{ display: "inline-block", paddingRight: "10px" }}
                 onClick={exportXLSX}
               >
-                <FilePdfOutlined style={{ fontSize: "160%" }} />
+                              <FileExcelOutlined style={{ fontSize: "160%" }} />
               </div>
             </Tooltip>
+                      <Tooltip title="Export to PDF">
             <div
               className="pointer-cursor"
               style={{ display: "inline-block", paddingRight: "10px" }}
               onClick={exportPDF}
             >
-              <Tooltip title="Export to PDF">
-                <FileExcelOutlined style={{ fontSize: "160%" }} />
-              </Tooltip>
-            </div>
+           
+                              <FilePdfOutlined style={{ fontSize: "160%" }} />
+                
+             
+                          </div>
+                      </Tooltip>
           </div>
         </Col>
       </Row>
