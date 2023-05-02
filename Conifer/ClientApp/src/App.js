@@ -5,7 +5,6 @@ import Project from "./Pages/Project";
 import Expense from "./Pages/Expense";
 import AddExpense from "./Pages/AddExpense";
 import FundManager from "./Pages/FundManager";
-import Reports from "./Pages/Reports";
 import Approvals from "./Pages/Approvals";
 import NormalLoginForm from "./Pages/Login";
 import ManageUsers from "./Pages/ManageUsers";
@@ -27,7 +26,6 @@ function App() {
 						<Route path="/expense" element={<Expense />} />
 						<Route path="/addExpense" element={<AddExpense />} />
 						<Route path="/fundmanager" element={<FundManager />} />
-						<Route path="/reports" element={<Reports />} />
 						<Route path="/approvals" element={<Approvals />} />
 						<Route path="/totalExpense" element={<TotalExpense />} />
 					</Route>
