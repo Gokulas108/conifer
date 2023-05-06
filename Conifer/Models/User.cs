@@ -6,10 +6,13 @@ namespace Conifer.Models;
 public class User : BaseEntity
 {
     [StringLength(50)]
-    public string Username { get; set; } = "";
+    public string username { get; set; } = "";
 
     [StringLength(50)]
     public string password { get; set; } = "";
+
+    [StringLength(100)]
+    public string name { get; set; } = "";
 
     [StringLength(20)]
     public string role { get; set; } = "user";
