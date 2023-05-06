@@ -15,6 +15,7 @@ import {
 } from "antd";
 import api from "../axios.config";
 import { CloseOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const { Option } = Select;
 const ManageUsers = () => {
@@ -100,9 +101,11 @@ const ManageUsers = () => {
   const onFinish = (values) => {
     setAULoading(true);
     values["password"] = "123456";
-    console.log("Success:", values);
-    api
-      .post("/register", { userInfo: values })
+      console.log("Success:", values);
+      let post_data = JSON.stringify({ userInfo: values })
+      let headers = { headers: { 'Content-Type': 'application/json' } }
+      axios
+          .post("api/Users", post_data, headers)
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
