@@ -23,8 +23,9 @@ export default function NormalLoginForm() {
         setLoading(false);
         console.log(res);
         if (res.status === 200) {
-          const user = res.data.user;
-          const token = res.data.response_data;
+          const user = res.data.response_data.user;
+          const token = res.data.response_data.token;
+
           setUserSession({ user, token });
 
           if (user.first_login) {

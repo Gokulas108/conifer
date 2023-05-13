@@ -43,24 +43,7 @@ const LayoutComponent = () => {
       }, 500);
     else setPathName(location.pathname);
     console.log(pathName);
-    verify();
   }, [location.pathname]);
-
-  const verify = () => {
-    setLoading(true);
-    api
-      .post("/verify", { user: getUser(), token: getToken() })
-      .then((res) => {
-        console.log(res);
-        setLoading(false);
-        setFirstRender(false);
-      })
-      .catch((err) => {
-        resetUserSession();
-        setLoading(false);
-        navigate("/login");
-      });
-  };
 
   return loading && firstRender ? (
     <div
