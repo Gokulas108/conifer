@@ -30,7 +30,7 @@ namespace Conifer.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult<UserLogin> Post([FromBody] UserLogin credentials)
+        public ActionResult<ResponseType<LoginResponse>> Post([FromBody] UserLogin credentials)
         {
             return trycatch(() =>
             {
@@ -38,7 +38,15 @@ namespace Conifer.Controllers
                 if (user != null)
                 {
                     var token = Generate(user);
-                    return Ok(new ResponseType<string> { message = "User Logged In Successfully", response_data = token });
+
+                    var resp_user = new User
+                    {
+                        Id = user.Id,
+                        role = user.role,
+                        name = user.name,
+                        username = user.username
+                    };
+                    return Ok(new ResponseType<LoginResponse> { message = "User Logged In Successfully", response_data = new LoginResponse { user = resp_user, token = token } });
                 }
                 return NotFound(new ResponseType { message = "Invalid Username or Password" });
             });
@@ -73,6 +81,13 @@ namespace Conifer.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public class LoginResponse
+        {
+            public User? user { get; set; }
+
+            public string token { get; set; } = string.Empty;
         }
     }
 }
