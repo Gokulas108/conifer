@@ -56,6 +56,7 @@ namespace Conifer.Controllers
                     username = user.username,
                     password = user.password,
                     role = user.role,
+                    first_login = true,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };

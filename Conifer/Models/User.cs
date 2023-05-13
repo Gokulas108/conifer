@@ -18,5 +18,7 @@ public class User : BaseEntity
 
     [StringLength(20)]
     public string role { get; set; } = "user";
+
+    public Boolean first_login { get; set; }
 }
 
