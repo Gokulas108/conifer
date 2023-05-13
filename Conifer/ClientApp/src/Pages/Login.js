@@ -1,6 +1,6 @@
 import { Form, Input, Button, Checkbox, message, Image, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import api from "../axios.config";
+import { api, pvtapi, pbapi } from "../axios.config";
 import logo from "../components/clogo.png";
 
 import { setUserSession } from "../Auth/Auth";
@@ -17,14 +17,14 @@ export default function NormalLoginForm() {
     let { username, password } = { ...values };
     username = username.trim();
     password = password.trim();
-    api
-      .post("/login", { userInfo: { username, password } })
+    pbapi
+      .post("/api/login", { username, password })
       .then((res) => {
         setLoading(false);
         console.log(res);
         if (res.status === 200) {
-          const user = res.data.message.user;
-          const token = res.data.message.token;
+          const user = res.data.user;
+          const token = res.data.response_data;
           setUserSession({ user, token });
 
           if (user.first_login) {
