@@ -2,15 +2,16 @@
 using Conifer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Conifer.Data; 
+namespace Conifer.Data;
 
 public class ApiDbContext : DbContext
 {
-	public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Project> Projects { get; set; }
 
-	public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
-	{
+    public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
+    {
 
-	}
+    }
 }
- 
+

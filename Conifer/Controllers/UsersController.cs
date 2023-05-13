@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Conifer.Data;
+using Conifer.DTO;
 using Conifer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +27,21 @@ namespace Conifer.Controllers
         // GET: api/values
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<ResponseType<IEnumerable<User>>>> Get()
+        public async Task<ActionResult<ResponseType<IEnumerable<DTO_User>>>> Get()
         {
             return await trycatch(async () =>
             {
-                IEnumerable<User> users = await dbContext.Users.ToListAsync(); ;
-                return Ok(new ResponseType<IEnumerable<User>> { response_data = users });
+                IEnumerable<DTO_User> users = await dbContext.Users
+                    .Select(x => new DTO_User
+                    {
+                        Id = x.Id,
+                        name = x.name,
+                        username = x.username,
+                        role = x.role,
+
+
+                    }).ToListAsync(); ;
+                return Ok(new ResponseType<IEnumerable<DTO_User>> { response_data = users });
             });
         }
 

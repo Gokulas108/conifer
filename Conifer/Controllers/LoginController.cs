@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Conifer.Data;
 using Conifer.Models;
+using Conifer.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -30,7 +31,7 @@ namespace Conifer.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult<ResponseType<LoginResponse>> Post([FromBody] UserLogin credentials)
+        public ActionResult<ResponseType<DTO_LoginResponse>> Post([FromBody] UserLogin credentials)
         {
             return trycatch(() =>
             {
@@ -39,29 +40,31 @@ namespace Conifer.Controllers
                 {
                     var token = Generate(user);
 
-                    var resp_user = new User
-                    {
-                        Id = user.Id,
-                        role = user.role,
-                        name = user.name,
-                        username = user.username,
-                        first_login = user.first_login
-                    };
-                    return Ok(new ResponseType<LoginResponse> { message = "User Logged In Successfully", response_data = new LoginResponse { user = resp_user, token = token } });
+                    return Ok(new ResponseType<DTO_LoginResponse> { message = "User Logged In Successfully", response_data = new DTO_LoginResponse { user = user, token = token } });
                 }
                 return NotFound(new ResponseType { message = "Invalid Username or Password" });
             });
         }
 
 
-        private User? Authenticate(UserLogin credentials)
+        private DTO_LoggedUser? Authenticate(UserLogin credentials)
         {
-            return dbContext.Users.FirstOrDefault(row => row.username.ToLower() == credentials.username.ToLower() && row.password == credentials.password);
+            return dbContext.Users
+                .Where(row => row.username.ToLower() == credentials.username.ToLower() && row.password == credentials.password)
+                .Select(x => new DTO_LoggedUser
+                {
+                    Id = x.Id,
+                    role = x.role,
+                    name = x.name,
+                    username = x.username,
+                    first_login = x.first_login
+                })
+                .FirstOrDefault();
 
         }
 
 
-        private string Generate(User user)
+        private string Generate(DTO_LoggedUser user)
         {
             var security_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Secret"] ?? ""));
             var credentials = new SigningCredentials(security_key, SecurityAlgorithms.HmacSha256);
@@ -82,13 +85,6 @@ namespace Conifer.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public class LoginResponse
-        {
-            public User? user { get; set; }
-
-            public string token { get; set; } = string.Empty;
         }
     }
 }
