@@ -44,7 +44,8 @@ namespace Conifer.Controllers
                         Id = user.Id,
                         role = user.role,
                         name = user.name,
-                        username = user.username
+                        username = user.username,
+                        first_login = user.first_login
                     };
                     return Ok(new ResponseType<LoginResponse> { message = "User Logged In Successfully", response_data = new LoginResponse { user = resp_user, token = token } });
                 }
