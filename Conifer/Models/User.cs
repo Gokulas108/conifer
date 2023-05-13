@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conifer.Models;
 
+[Index(nameof(username), IsUnique = true)]
 public class User : BaseEntity
 {
     [StringLength(50)]
