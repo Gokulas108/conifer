@@ -42,25 +42,27 @@ namespace Conifer.Controllers
         [Authorize]
         public async Task<ActionResult<ResponseType>> Post([FromBody] Project project)
         {
-
-            User? current_user = getCurrentUser();
-
-            Project new_project = new Project
+            return await trycatch(async () =>
             {
-                number = project.number,
-                name = project.name,
-                contact = project.contact,
-                location = project.location,
-                type = project.type,
-                user = current_user
-            };
+                User? current_user = getCurrentUser();
 
-            await dbContext.Projects.AddAsync(new_project);
-            await dbContext.SaveChangesAsync();
+                Project new_project = new Project
+                {
+                    number = project.number,
+                    name = project.name,
+                    contact = project.contact,
+                    location = project.location,
+                    type = project.type,
+                    user = current_user
+                };
 
-            ResponseType response = new ResponseType { message = "Project Successfully created" };
+                await dbContext.Projects.AddAsync(new_project);
+                await dbContext.SaveChangesAsync();
 
-            return Created("", response);
+                ResponseType response = new ResponseType { message = "Project Successfully created" };
+
+                return Created("", response);
+            });
         }
 
         // PUT api/values/5
